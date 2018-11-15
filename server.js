@@ -64,7 +64,6 @@ wss.on('connection', function (ws) {
         //when a user tries to login
         case "login":
           console.log("User logged", data.name);
-
           //if anyone is logged in with this username then refuse 
           if (users[data.name]) {
             sendTo(ws, {
@@ -75,40 +74,31 @@ wss.on('connection', function (ws) {
             //save user connection on the server 
             users[data.name] = ws;
             ws.name = data.name;
-
             sendTo(ws, {
               type: "login",
               success: true
             });
           }
-
           break;
-
         case "offer":
           //for ex. UserA wants to call UserB 
           console.log("Sending offer to: ", data.name);
-
           //if UserB exists then send him offer details 
           var conn = users[data.name];
-
           if (conn != null) {
             //setting that UserA connected with UserB 
             ws.otherName = data.name;
-
             sendTo(conn, {
               type: "offer",
               offer: data.offer,
               name: ws.name
             });
           }
-
           break;
-
         case "answer":
           console.log("Sending answer to: ", data.name);
           //for ex. UserB answers UserA 
           var conn = users[data.name];
-
           if (conn != null) {
             ws.otherName = data.name;
             sendTo(conn, {
@@ -116,9 +106,7 @@ wss.on('connection', function (ws) {
               answer: data.answer
             });
           }
-
           break;
-
         case "candidate":
           console.log("Sending candidate to:", data.name);
           var conn = users[data.name];
@@ -129,23 +117,18 @@ wss.on('connection', function (ws) {
               candidate: data.candidate
             });
           }
-
           break;
-
-        case "leave":
+        case "leave": // When User Disconnect
           console.log("Disconnecting from", data.name);
           var conn = users[data.name];
           conn.otherName = null;
-
           //notify the other user so he can disconnect his peer connection 
           if (conn != null) {
             sendTo(conn, {
               type: "leave"
             });
           }
-
           break;
-
         default:
           sendTo(ws, {
             type: "error",
@@ -158,7 +141,6 @@ wss.on('connection', function (ws) {
   });
 
   ws.on('close', function () {
-
     if (ws.name) {
       delete users[ws.name];
       if (ws.otherName) {
@@ -186,6 +168,6 @@ wss.on('connection', function (ws) {
 
 });
 
-function sendTo(connection, message) { 
-  connection.send(JSON.stringify(message)); 
+function sendTo(connection, message) {
+  connection.send(JSON.stringify(message));
 }
