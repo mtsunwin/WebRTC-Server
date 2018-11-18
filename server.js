@@ -1,21 +1,22 @@
 var WebSocket = require('ws'),
   uuid = require('node-uuid'),
-  express = require('express');
+  http = require("http"),
+  express = require('express'),
+  app = express(),
+  WebSocketServer = WebSocket.Server;
 
-
-var WebSocketServer = WebSocket.Server,
-  app = express();
+var server = http.createServer(app)
+app.use(express.static(__dirname + "/"))
 
 app.get("/", (req, resp) => {
   resp.end("200")
 })
+
 app.set('port', process.env.PORT || 3001)
-app.listen(app.get('port'), () => {
-  console.log("Server run with Port ", app.get('port'))
-})
 
-var wss = new WebSocketServer({ port: app.get('port') });
+server.listen(app.get('port'), () => { console.log(app.get('port')) })
 
+var wss = new WebSocketServer({ server: server });
 var clients = [];
 var users = {}; // for calling
 var clientIndex = 1;
