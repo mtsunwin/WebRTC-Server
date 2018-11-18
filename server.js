@@ -14,7 +14,7 @@ app.listen(app.get('port'), () => {
   console.log("Server run with Port ", app.get('port'))
 })
 
-var wss = new WebSocketServer({ port: app.get('port') }),
+var wss = new WebSocketServer({ port: app.get('port') });
 
 var clients = [];
 var users = {}; // for calling
