@@ -4,7 +4,6 @@ var WebSocket = require('ws'),
 
 
 var WebSocketServer = WebSocket.Server,
-  wss = new WebSocketServer({ port: 8181 }),
   app = express();
 
 app.get("/", (req, resp) => {
@@ -15,6 +14,7 @@ app.listen(app.get('port'), () => {
   console.log("Server run with Port ", app.get('port'))
 })
 
+var wss = new WebSocketServer({ port: app.get('port') }),
 
 var clients = [];
 var users = {}; // for calling
