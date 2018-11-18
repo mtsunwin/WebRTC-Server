@@ -1,14 +1,26 @@
-var WebSocket = require('ws');
+var WebSocket = require('ws'),
+  uuid = require('node-uuid'),
+  express = require('express');
+
+
 var WebSocketServer = WebSocket.Server,
-  wss = new WebSocketServer({ port: 8181 });
-var uuid = require('node-uuid');
+  wss = new WebSocketServer({ port: 8181 }),
+  app = express();
+
+app.get("/", (req, resp) => {
+  resp.end("200")
+})
+app.set('port', process.env.PORT || 3001)
+app.listen(app.get('port'), () => {
+  console.log("Server run with Port ", app.get('port'))
+})
+
 
 var clients = [];
 var users = {}; // for calling
 var clientIndex = 1;
 
 wss.on('connection', function (ws) {
-
   var client_uuid = uuid.v4();
   var nickname = "AnonymousUser-" + clientIndex;
   clientIndex += 1;
@@ -164,10 +176,9 @@ wss.on('connection', function (ws) {
     }
 
   });
-
-
 });
 
 function sendTo(connection, message) {
   connection.send(JSON.stringify(message));
 }
+
