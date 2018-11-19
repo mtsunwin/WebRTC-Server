@@ -13,7 +13,6 @@ app.get("/", (req, resp) => {
 })
 
 app.set('port', process.env.PORT || 3001)
-
 server.listen(app.get('port'), () => { console.log(app.get('port')) })
 
 var wss = new WebSocketServer({ server: server });
@@ -32,10 +31,8 @@ wss.on('connection', function (ws) {
 
     //accepting only JSON messages 
     try {
-      console.log("Invalid JSON 2");
       data = JSON.parse(message);
     } catch (e) {
-      console.log("Invalid JSON");
       data = message;
     }
 
@@ -72,11 +69,11 @@ wss.on('connection', function (ws) {
         }
       }
     } else {
-      //switching type of the user message 
+      //switching type of the user message
       switch (data.type) {
         //when a user tries to login
         case "login":
-          console.log("User logged", data.name);
+          console.log("User logged:", data.name);
           //if anyone is logged in with this username then refuse 
           if (users[data.name]) {
             sendTo(ws, {
@@ -121,9 +118,8 @@ wss.on('connection', function (ws) {
           }
           break;
         case "candidate":
-          console.log("Sending candidate to:", data.name);
           var conn = users[data.name];
-
+          console.log(`Sending candidate to:`, data.name);
           if (conn != null) {
             sendTo(conn, {
               type: "candidate",
