@@ -20,13 +20,11 @@ var client_list = [], user_list = {}, clientIndex = 1;
 wss.on('connection', ws => {
 
     var client_uuid = uuid.v4();
-
     var client_infor = {
         ws: ws,
         id: client_uuid,
         username: client_uuid
     }
-
     client_list.push(client_infor)
     console.log("Client Connected: ", client_uuid);
 
@@ -115,7 +113,17 @@ function SendToClient(connection, message) {
 
 
 // ROUTE
-const routeIndex = require('./route/route_Index');
+
 const routeListConnect = require('./route/route_listconnect');
-routeIndex(app);
 routeListConnect(app, client_list);
+app.get('/', (req, resp) => {
+    // fs.readFile('./public/index.html', function (err, html) {
+    //     if (err) throw err;
+    //     resp.writeHeader(200, { "Content-Type": "text/html" });
+    //     resp.write(html);
+    //     resp.end();
+    // })
+    resp.writeHeader(200, { "Content-Type": "text/html" });
+    resp.write(app.get("PORT")+"");
+    resp.end();
+})
