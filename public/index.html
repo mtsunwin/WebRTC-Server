@@ -1,0 +1,29 @@
+<html>
+
+<head>
+    <title>WebRTC Video Demo</title>
+</head>
+
+<body style="text-align:center">
+    <div>
+        <lable>Username: </lable> <input id="iptLogin" type="text" /> <input type="button" value="LOGIN" id="btnLogin" />
+    </div>
+    <hr width="80%" />
+    <video height="100" id="yourVideosStream" autoplay></video>
+    <video height="100" id="VdeosStream" autoplay></video>
+    <video height="100" id="VdeosStream_v2" autoplay></video>
+    <br>
+    <label>Call to: </label><input id="iptCallTo" type="text" /> 
+    <input type="button" value="Call" id="btnCall" />
+    <input type="button" value="HangUp" id="btnHangup" />
+
+    <label>Call to: </label><input id="iptCallTo_v2" type="text" /> 
+    <input type="button" value="Call" id="btnCall_v2" />
+    <input type="button" value="HangUp" id="btnHangup_v2" />
+    <hr width="80%" />
+
+
+    <script src="./js/client.js"></script>
+</body>
+
+</html>
